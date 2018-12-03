@@ -25,38 +25,4 @@ namespace Morse
             return $"{OnTimeStamp} - {OffTimeStamp} : {Duration}";
         }
     }
-
-    public class SignalBuilder
-    {
-        private List<Signal> _signals;
-
-        public SignalBuilder()
-        {
-            _signals = new List<Signal>(32);
-        }
-
-        public SignalBuilder Add(long onTimeStamp, long offTimeStamp)
-        {
-            _signals.Add(new Signal(onTimeStamp, offTimeStamp));
-            return this;
-        }
-
-        public SignalBuilder Add(params long[] alternateOnOfTimestamps)
-        {
-            if (alternateOnOfTimestamps.Length % 2 != 0)
-                throw new ArgumentException("Alternate timestamps should be even.");
-
-            for (int i = 0; i < alternateOnOfTimestamps.Length; i += 2)
-            {
-                _signals.Add(new Signal(alternateOnOfTimestamps[i], alternateOnOfTimestamps[i + 1]));
-            }
-
-            return this;
-        }
-
-        public IEnumerable<Signal> Build()
-        {
-            return _signals;
-        }
-    }
 }
