@@ -18,53 +18,42 @@ namespace Morse
         private const char CHAR_SEPARATOR = ' ';
         private const char WORD_SEPARATOR = '|';
 
-        List<char> _chars;
-        IDictionary<char, long> _charDurationMap;
-
+        private readonly List<char> charList;
 
         public SignalBuilder(long dotDuration)
         {
             DotDuration = dotDuration;
-          
-            _chars = new List<char>();
-
-            _charDurationMap = new Dictionary<char, long>
-            {
-                { DOT, dotDuration },
-                { DASH, dotDuration * 3 },
-                { CHAR_SEPARATOR, dotDuration },
-                { WORD_SEPARATOR, dotDuration * 7 }
-            };
+            charList = new List<char>();
+        
         }
-
 
         public SignalBuilder Dash()
         {
-            _chars.Add(DASH);
+            charList.Add(DASH);
             return this;
         }
 
         public SignalBuilder Dot()
         {
-            _chars.Add(DOT);
+            charList.Add(DOT);
             return this;
         }
 
         public SignalBuilder EndLetter()
         {
-            _chars.Add(CHAR_SEPARATOR);
+            charList.Add(CHAR_SEPARATOR);
             return this;
         }
 
         public SignalBuilder EndWord()
         {
-            _chars.Add(WORD_SEPARATOR);
+            charList.Add(WORD_SEPARATOR);
             return this;
         }
 
         public IEnumerable<Signal> Build()
         {
-            string morseChars = new string(_chars.ToArray());
+            string morseChars = new string(charList.ToArray());
 
             long currentTime = 0L;
 
@@ -82,7 +71,7 @@ namespace Morse
                 }
                 else
                 {
-                    long duration = 0L;
+                    long duration;
 
                     if(currChar == DOT)
                     {
@@ -101,7 +90,7 @@ namespace Morse
                     currentTime += duration;
 
                     bool hasNext = i < morseChars.Length - 1;
-                    bool nextIsWhiteSpace = hasNext ? morseChars[i + 1] == WORD_SEPARATOR || morseChars[i + 1] == CHAR_SEPARATOR : false;
+                    bool nextIsWhiteSpace = hasNext && (morseChars[i + 1] == WORD_SEPARATOR || morseChars[i + 1] == CHAR_SEPARATOR);
 
                     if (!nextIsWhiteSpace)
                     {
@@ -112,11 +101,8 @@ namespace Morse
                     yield return new Signal(on, on + duration);
                 }
             }
-            
 
         }
-
-        
 
     }
 }

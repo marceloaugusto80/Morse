@@ -1,3 +1,5 @@
 {
-	"methodDisplay": "method"
+	"$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
+	"methodDisplay": "method",
+	"methodDisplayOptions": "replaceUnderscoreWithSpace"
 }

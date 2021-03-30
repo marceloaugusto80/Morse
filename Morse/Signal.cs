@@ -5,8 +5,6 @@ using System.Linq;
 namespace Morse
 {
 
-
-
     public class Signal
     {
         public long OnTimeStamp { get; set; }
